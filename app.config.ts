@@ -4,7 +4,6 @@ import UnoCSS from "unocss/vite";
 export default defineConfig({
   vite: {
     plugins: [UnoCSS()],
-    optimizeDeps: {},
   },
   server: {
     preset: "node",

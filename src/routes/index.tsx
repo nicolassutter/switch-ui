@@ -1,9 +1,15 @@
 import { createAsync } from "@solidjs/router";
 import { createSignal, For, Show } from "solid-js";
 import GameCard from "../../components/GameCard";
-import SearchBar from "../../components/SearchBar";
 import { api } from "~/lib/trpc";
 import { usePromise } from "~/lib/primitives";
+import { Button } from "~/components/ui/button";
+import {
+  TextField,
+  TextFieldLabel,
+  TextFieldRoot,
+} from "~/components/ui/textfield";
+import { ColorMode } from "~/components/ColorMode";
 
 export default function Index() {
   const [searchQuery, setSearchQuery] = createSignal("");
@@ -27,23 +33,33 @@ export default function Index() {
 
   return (
     <main>
-      <div class="min-h-screen bg-gray-900 p-8">
-        <div class="max-w-6xl mx-auto">
-          <h1 class="text-3xl font-bold mb-8 text-center text-white">
+      <div class="min-h-screen bg-background text-foreground">
+        <div class="max-w-6xl mx-auto py-6 px-4">
+          <h1 class="text-3xl font-bold mb-8 text-center">
             Nintendo Switch Games
           </h1>
 
-          <button
-            class="text-white cursor-pointer underline hover:opacity-80"
-            on:click={() => updateDatabase()}
-          >
-            Update database
-            <Show when={pending()}>loading...</Show>
-          </button>
+          <div>
+            <span class="sr-only">Select color theme</span>
+            <ColorMode />
+          </div>
 
-          <SearchBar onSearch={setSearchQuery} />
+          <div class="mt-6">
+            <Button variant={"default"} onClick={() => updateDatabase()}>
+              Update database
+              <Show when={pending()}> loading...</Show>
+            </Button>
+          </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <TextFieldRoot class="mt-6">
+            <TextFieldLabel>Search</TextFieldLabel>
+            <TextField
+              type="text"
+              onInput={(e) => setSearchQuery(e.currentTarget.value)}
+            />
+          </TextFieldRoot>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
             <For each={filteredGames()}>
               {(game) => <GameCard game={game} />}
             </For>
