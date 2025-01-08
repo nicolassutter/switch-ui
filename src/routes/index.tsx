@@ -10,6 +10,14 @@ import {
   TextFieldRoot,
 } from "~/components/ui/textfield";
 import { clientOnly } from "@solidjs/start";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
 
 const ColorMode = clientOnly(() => import("~/components/ColorMode"));
 
@@ -23,15 +31,37 @@ export default function Index() {
 
   const userGames = createAsync(() => getUserGames());
 
+  /** Every category that exists for the user's library */
+  const availableCategories = () => {
+    return (
+      userGames()?.reduce((acc, game) => {
+        game.category?.forEach((category) => {
+          if (!acc.includes(category)) acc.push(category);
+        });
+        return acc;
+      }, [] as string[]) ?? []
+    );
+  };
+
+  const [selectedCategory, setSelectedCategory] = createSignal<
+    string | undefined
+  >();
+
   const filteredGames = () => {
     const query = searchQuery().toLowerCase();
 
+    let games = userGames();
+
+    // first filter by category if selected
+    if (selectedCategory()) {
+      games = games?.filter((game) =>
+        game.category?.includes(selectedCategory()!)
+      );
+    }
+
+    // then filter by name to reduce the number of games to display
     return (
-      userGames()?.filter(
-        (game) =>
-          game.name.toLowerCase().includes(query) ||
-          game.category?.join(" ").toLowerCase().includes(query)
-      ) ?? []
+      games?.filter((game) => game.name.toLowerCase().includes(query)) ?? []
     );
   };
 
@@ -76,6 +106,26 @@ export default function Index() {
               onInput={(e) => setSearchQuery(e.currentTarget.value)}
             />
           </TextFieldRoot>
+
+          <div class="w-56 max-w-full mt-2">
+            <Select
+              options={availableCategories()}
+              itemComponent={(props) => (
+                <SelectItem item={props.item}>{props.item.rawValue}</SelectItem>
+              )}
+              onChange={(cat) => {
+                setSelectedCategory(cat ?? undefined);
+              }}
+            >
+              <SelectLabel>Categories</SelectLabel>
+              <SelectTrigger>
+                <SelectValue<string>>
+                  {(state) => state.selectedOption()}
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent />
+            </Select>
+          </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
             <For each={filteredGames()}>
