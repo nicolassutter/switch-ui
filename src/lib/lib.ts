@@ -1,9 +1,6 @@
-import { gamesTable } from "~/db/schema";
+import { gamesTable } from "../db/schema";
 import { RawGame } from "../../types";
-import { drizzle } from "drizzle-orm/libsql";
-import * as schema from "~/db/schema";
-
-export const db = drizzle(process.env.DB_FILE_NAME!, { schema });
+import { db } from "../db/db";
 
 const GAMES_DATABASE_URL =
   "https://raw.githubusercontent.com/blawar/titledb/master/US.en.json";

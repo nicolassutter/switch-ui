@@ -6,8 +6,9 @@ import { stat } from "node:fs/promises";
 
 import { gamesTable } from "~/db/schema";
 import { inArray } from "drizzle-orm";
-import { db, updateDatabase } from "~/lib/lib";
+import { updateDatabase } from "~/lib/lib";
 import { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
+import { db } from "~/db/db";
 
 const USER_GAMES_DIR = import.meta.env.DEV
   ? join(process.cwd(), "games")

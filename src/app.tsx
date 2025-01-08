@@ -18,7 +18,10 @@ export default function App() {
               <ColorModeScript />
               <ColorModeProvider>
                 <ErrorBoundary
-                  fallback={(err) => <div>Error: {err.message}</div>}
+                  fallback={(err) => {
+                    console.log(err);
+                    return <div>Error: {err.message}</div>;
+                  }}
                 >
                   {props.children}
                 </ErrorBoundary>

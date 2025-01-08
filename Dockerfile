@@ -15,5 +15,7 @@ RUN pnpm run build
 FROM base
 COPY --from=prod-deps /app/node_modules /app/node_modules
 COPY --from=build /app/dist /app/dist
+# we need to copy the drizzle folder for the migrations since they are ran at runtime
+COPY --from=build /app/drizzle /app/drizzle
 EXPOSE 3000
 CMD [ "pnpm", "start" ]

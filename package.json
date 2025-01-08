@@ -4,7 +4,9 @@
   "scripts": {
     "dev": "vinxi dev",
     "build": "vinxi build",
-    "start": "vinxi start"
+    "vinxi:start": "vinxi start",
+    "vinxi:init": "vinxi run init.ts",
+    "start": "pnpm run vinxi:init && pnpm run vinxi:start"
   },
   "dependencies": {
     "@iconify-json/mingcute": "^1.2.3",
