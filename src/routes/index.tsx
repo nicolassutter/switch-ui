@@ -1,8 +1,8 @@
 import { createAsync, query, revalidate } from "@solidjs/router";
 import { createSignal, For, Show } from "solid-js";
-import GameCard from "../../components/GameCard";
 import { api } from "~/lib/trpc";
 import { usePromise } from "~/lib/primitives";
+import GameCard from "~/components/GameCard";
 import { Button } from "~/components/ui/button";
 import {
   TextField,
