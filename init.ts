@@ -3,7 +3,6 @@ import { DB_PATH } from "./src/config";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { migrate } from "drizzle-orm/libsql/migrator";
-import { db } from "./src/db/db";
 
 async function init() {
   try {
@@ -16,6 +15,8 @@ async function init() {
 
     try {
       console.log("Migrating database");
+      const { db } = await import("./src/db/db");
+
       await migrate(db, {
         migrationsFolder: join(process.cwd(), "drizzle"),
       });

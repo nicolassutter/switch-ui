@@ -1,11 +1,11 @@
 {
-  "name": "example-bare",
+  "name": "switch-ui",
   "type": "module",
   "scripts": {
     "dev": "vinxi dev",
     "build": "vinxi build",
     "vinxi:start": "vinxi start",
-    "vinxi:init": "vinxi run init.ts",
+    "vinxi:init": "NODE_ENV='production' vinxi run init.ts",
     "start": "pnpm run vinxi:init && pnpm run vinxi:start"
   },
   "dependencies": {
