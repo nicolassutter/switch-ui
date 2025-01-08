@@ -67,7 +67,14 @@ export const appRouter = createTRPCRouter({
 
     const promises = games.map(async (game) => {
       const gameFile = gamesByTitleId[game.titleId].file;
-      const gameSize = (await stat(gameFile)).size;
+
+      let gameSize = 0;
+
+      try {
+        gameSize = (await stat(gameFile.normalize())).size;
+      } catch (error) {
+        console.log(`Error getting game size for ${game.name}`, error);
+      }
 
       return {
         ...game,
