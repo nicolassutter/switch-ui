@@ -1,0 +1,10 @@
+services:
+  switch-ui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./games:/games
+      - ./data:/switch-ui
