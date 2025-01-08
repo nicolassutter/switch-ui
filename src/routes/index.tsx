@@ -1,4 +1,4 @@
-import { createAsync } from "@solidjs/router";
+import { createAsync, query, revalidate } from "@solidjs/router";
 import { createSignal, For, Show } from "solid-js";
 import GameCard from "../../components/GameCard";
 import { api } from "~/lib/trpc";
@@ -13,9 +13,15 @@ import { clientOnly } from "@solidjs/start";
 
 const ColorMode = clientOnly(() => import("~/components/ColorMode"));
 
+const getUserGames = query(async () => {
+  "use server";
+  return api.getUserGamesFromDatabase.query();
+}, "getUserGames");
+
 export default function Index() {
   const [searchQuery, setSearchQuery] = createSignal("");
-  const userGames = createAsync(() => api.getUserGamesFromDatabase.query());
+
+  const userGames = createAsync(() => getUserGames());
 
   const filteredGames = () => {
     const query = searchQuery().toLowerCase();
@@ -29,8 +35,15 @@ export default function Index() {
     );
   };
 
-  const { pending, start: updateDatabase } = usePromise(() =>
-    api.updateDatabase.mutate()
+  const refetchGames = () => {
+    return revalidate(getUserGames.key);
+  };
+
+  const { pending: updateDatabasePending, start: updateDatabase } = usePromise(
+    async () => {
+      await api.updateDatabase.mutate();
+      await refetchGames();
+    }
   );
 
   return (
@@ -49,7 +62,10 @@ export default function Index() {
           <div class="mt-6">
             <Button variant={"default"} onClick={() => updateDatabase()}>
               Update database
-              <Show when={pending()}> loading...</Show>
+              <Show when={updateDatabasePending()}>
+                <span class="i-mingcute-loading-fill ml-2 animate-spin"></span>
+                <span class="sr-only">loading</span>
+              </Show>
             </Button>
           </div>
 

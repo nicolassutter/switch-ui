@@ -1,6 +1,6 @@
-import { gamesTable } from "~/db/schema";
+import { type RouterOutput } from "~/server/router";
 
-export type Game = typeof gamesTable.$inferInsert;
+export type Game = RouterOutput["getUserGamesFromDatabase"][number];
 
 export type RawGame = {
   id?: string;
