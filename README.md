@@ -1,32 +1,24 @@
-# SolidStart
+# switch-ui
 
-Everything you need to build a Solid project, powered by [`solid-start`](https://start.solidjs.com);
+![](./public/screenshot.webp)
 
-## Creating a project
+A frontend for your locally stored and legally obtained (dumped) switch games.
 
-```bash
-# create a new project in the current directory
-npm init solid@latest
+The backend scans a directory (docker volume) on your machine where your games are stored in xci, nsp or nsz format. It then tries to find the game's titleId with a regexp and finally matches it to a game in the database.
 
-# create a new project in my-app
-npm init solid@latest my-app
-```
+## Features
 
-## Developing
+- Automatically maintain database with a cron job (once a day)
+- Manually update database and scan filesystem
+- Display a list of your switch games
+- Filter games based on search query or category
+- Dark & Light mode
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## Stack
 
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-Solid apps are built with _presets_, which optimise your project for deployment to different environments.
-
-By default, `npm run build` will generate a Node app that you can run with `npm start`. To use a different preset, add it to the `devDependencies` in `package.json` and specify in your `app.config.js`.
-
-## This project was created with the [Solid CLI](https://solid-cli.netlify.app)
+- Solid Start
+- TypeScript
+- Uno CSS
+- tRPC
+- Drizzle and SQLite
+- https://shadcn-solid.com/
