@@ -13,7 +13,7 @@ export const ColorMode = () => {
   const theme = useColorMode();
 
   return (
-    <DropdownMenu placement="bottom">
+    <DropdownMenu placement="bottom-start">
       <DropdownMenuTrigger
         as={(props: DropdownMenuSubTriggerProps) => (
           <Button variant="outline" {...props}>
@@ -26,7 +26,7 @@ export const ColorMode = () => {
           </Button>
         )}
       />
-      <DropdownMenuContent class="w-56">
+      <DropdownMenuContent class="w-max">
         <DropdownMenuItem onSelect={() => theme.setColorMode("light")}>
           Light
         </DropdownMenuItem>
@@ -40,3 +40,4 @@ export const ColorMode = () => {
     </DropdownMenu>
   );
 };
+export default ColorMode;

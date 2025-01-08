@@ -9,7 +9,9 @@ import {
   TextFieldLabel,
   TextFieldRoot,
 } from "~/components/ui/textfield";
-import { ColorMode } from "~/components/ColorMode";
+import { clientOnly } from "@solidjs/start";
+
+const ColorMode = clientOnly(() => import("~/components/ColorMode"));
 
 export default function Index() {
   const [searchQuery, setSearchQuery] = createSignal("");
